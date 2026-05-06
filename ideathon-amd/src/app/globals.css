@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-border: var(--surface-border);
+
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+  --radius-full: 9999px;
+  
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+:root {
+  /* Default to Dark Mode for premium look */
+  --background: #050505;
+  --foreground: #FAFAFA;
+  
+  --primary: #c3ff00; /* Vibrant Neon Green/Yellow */
+  --primary-foreground: #000000;
+  
+  --accent: #292929;
+  --accent-foreground: #FAFAFA;
+
+  --surface: rgba(255, 255, 255, 0.03);
+  --surface-hover: rgba(255, 255, 255, 0.08);
+  --surface-border: rgba(255, 255, 255, 0.08);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary selection:text-primary-foreground;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background-color: var(--surface);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--surface-border);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+  
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+  
+  @keyframes scan {
+    0%, 100% { top: 0%; opacity: 0; }
+    10%, 90% { opacity: 1; }
+    50% { top: 100%; }
+  }
+
+  .animate-scan {
+    animation: scan 3s linear infinite;
+  }
+  
+  .glass-card:hover {
+    background-color: var(--surface-hover);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 40px rgba(195, 255, 0, 0.1);
+  }
+
+  .text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, white, rgba(255, 255, 255, 0.5));
+  }
+  
+  .text-primary-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, #c3ff00, #80ff00);
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
