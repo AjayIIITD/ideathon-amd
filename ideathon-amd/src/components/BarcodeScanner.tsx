@@ -6,7 +6,7 @@ import { Loader2 } from "lucide-react";
 
 interface BarcodeScannerProps {
   onResult: (result: string) => void;
-  onError?: (error: any) => void;
+  onError?: (error: unknown) => void;
 }
 
 export default function BarcodeScanner({ onResult, onError }: BarcodeScannerProps) {
@@ -36,7 +36,7 @@ export default function BarcodeScanner({ onResult, onError }: BarcodeScannerProp
                 scannerRef.current.stop().catch(console.error);
               }
             },
-            (errorMessage) => {
+            () => {
               // Ignore frequent scan errors (expected when no barcode is in view)
             }
           );

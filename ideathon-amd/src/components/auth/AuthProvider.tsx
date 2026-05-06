@@ -21,23 +21,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isMockMode) {
-      // Simulate mock auth check
+      // Simulate mock auth check — deferred to avoid synchronous setState in effect
       const mockEmail = typeof window !== "undefined" ? localStorage.getItem("mockUserEmail") : null;
-      if (mockEmail) {
-        setUser({ uid: "mock-uid-123", email: mockEmail } as User);
-        setProfile({
-          uid: "mock-uid-123",
-          name: localStorage.getItem("mockUserName") || "Mock User",
-          currentStreak: 5,
-          longestStreak: 12,
-          healthScore: 88,
-          createdAt: Date.now(),
-        });
-      } else {
-        setUser(null);
-        setProfile(null);
-      }
-      setLoading(false);
+      queueMicrotask(() => {
+        if (mockEmail) {
+          setUser({ uid: "mock-uid-123", email: mockEmail } as User);
+          setProfile({
+            uid: "mock-uid-123",
+            name: localStorage.getItem("mockUserName") || "Mock User",
+            currentStreak: 5,
+            longestStreak: 12,
+            healthScore: 88,
+            createdAt: Date.now(),
+          });
+        } else {
+          setUser(null);
+          setProfile(null);
+        }
+        setLoading(false);
+      });
       return;
     }
 

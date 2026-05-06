@@ -45,7 +45,7 @@ const ONBOARDING_STEPS = [
 
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [answers, setAnswers] = useState<Record<string, unknown>>({});
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const router = useRouter();

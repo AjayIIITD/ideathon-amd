@@ -7,7 +7,6 @@ import { createUserDocument } from "@/lib/firebase/users";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Mail, Lock, User, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useEffect } from "react";
 
@@ -59,8 +58,8 @@ export default function AuthPage() {
         // After signup, redirect to onboarding
         router.push("/onboarding");
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Authentication failed");
     } finally {
       if (!isMockMode) setLoading(false);
     }

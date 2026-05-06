@@ -3,9 +3,9 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { mockAnalytics } from "@/lib/mock-data";
-import { Sparkles, Flame, Target, Utensils } from "lucide-react";
+import { Sparkles, Flame, Target } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 export default function DashboardPage() {

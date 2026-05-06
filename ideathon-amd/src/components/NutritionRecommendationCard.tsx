@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ThumbsUp, ThumbsDown, Minus, Sparkles, TrendingUp, TrendingDown, Lightbulb, Loader2 } from "lucide-react";
+import { ThumbsUp, ThumbsDown, Minus, Sparkles, TrendingUp, TrendingDown, Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NutritionRecommendation } from "@/lib/api/nutritionRecommendation";
 

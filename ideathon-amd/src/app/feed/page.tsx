@@ -41,7 +41,7 @@ export default function FeedPage() {
         mealTimestamp: Date.now(),
         createdAt: Date.now()
       }));
-      setMeals(mockMapped);
+      setTimeout(() => setMeals(mockMapped), 0);
       return;
     }
 
