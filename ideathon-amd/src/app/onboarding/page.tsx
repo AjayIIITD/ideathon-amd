@@ -113,13 +113,13 @@ export default function OnboardingPage() {
                 ) : (
                   <div className="flex flex-col items-center py-8">
                     <span className="text-5xl font-bold text-primary mb-4">
-                      {answers[step.id] || 8} <span className="text-xl text-white/50">hrs</span>
+                      {String(answers[step.id] || 8)} <span className="text-xl text-white/50">hrs</span>
                     </span>
                     <input 
                       type="range" 
                       min={step.min} 
                       max={step.max} 
-                      value={answers[step.id] || 8}
+                      value={Number(answers[step.id] || 8)}
                       onChange={(e) => setAnswers({ ...answers, [step.id]: Number(e.target.value) })}
                       className="w-full accent-primary"
                     />

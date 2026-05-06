@@ -139,7 +139,7 @@ export async function analyzeImageWithGemini(imageFile: File): Promise<GeminiAna
   if (!apiKey) {
     console.warn("No NEXT_PUBLIC_GEMINI_API_KEY set. Using demo data.");
     await new Promise((r) => setTimeout(r, 1800));
-    return DEMO_RESULT;
+    return getRandomDemoResult();
   }
 
   const base64Image = await fileToBase64(imageFile);
@@ -195,12 +195,12 @@ If you cannot identify food, return the same structure with all zeros and empty 
     );
   } catch (err) {
     console.error("Gemini network error, using demo mode:", err);
-    return DEMO_RESULT;
+    return getRandomDemoResult();
   }
 
   if (!response.ok) {
     console.error(`Gemini API error ${response.status}, using demo mode.`);
-    return DEMO_RESULT;
+    return getRandomDemoResult();
   }
 
   const data = await response.json();
@@ -209,13 +209,13 @@ If you cannot identify food, return the same structure with all zeros and empty 
 
   if (!jsonMatch) {
     console.error("Gemini returned non-JSON:", rawText);
-    return DEMO_RESULT;
+    return getRandomDemoResult();
   }
 
   try {
     const result: GeminiAnalysisResult = JSON.parse(jsonMatch[0]);
     return result;
   } catch {
-    return DEMO_RESULT;
+    return getRandomDemoResult();
   }
 }
