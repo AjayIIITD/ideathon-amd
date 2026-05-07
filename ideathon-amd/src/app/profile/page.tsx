@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
 import { Settings, LogOut, Edit3, Grid, Bookmark, Award } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { auth, isMockMode } from "@/lib/firebase/config";

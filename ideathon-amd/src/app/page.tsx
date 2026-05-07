@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Camera, Upload, Zap, CheckCircle2, ChevronRight, Activity, Barcode, X, Edit3, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -92,15 +92,15 @@ export default function CameraPage() {
           ...ed, healthScore: result.healthScore,
         }).then(setRecommendation).catch((e) => setRecError(e.message)).finally(() => setLoadingRec(false));
       }
-    } catch (err: any) {
-      setAiError(err.message || "AI analysis failed.");
+    } catch (err) {
+      setAiError(err instanceof Error ? err.message : "AI analysis failed.");
     } finally {
       setIsAnalyzing(false);
     }
   };
 
   // ─── Barcode Flow ───────────────────────────────────────────────
-  const handleBarcodeResult = async (barcode: string) => {
+  const handleBarcodeResult = useCallback(async (barcode: string) => {
     if (isFetchingProduct || scanComplete) return;
     setIsFetchingProduct(true);
     setBarcodeError(null);
@@ -127,7 +127,7 @@ export default function CameraPage() {
     } finally {
       setIsFetchingProduct(false);
     }
-  };
+  }, [isFetchingProduct, scanComplete, profile]);
 
   // ─── Log Meal ───────────────────────────────────────────────────
   const handleLogMeal = async () => {
@@ -146,16 +146,21 @@ export default function CameraPage() {
         imageURL = productData.image;
       }
 
-      const src = scanMode === "barcode" ? productData : editableData;
       const aiSrc = scanMode === "ai" && editableData ? editableData : null;
       const barcodeSrc = scanMode === "barcode" && productData ? productData : null;
 
+      const detectedFoods = aiResult?.foods && aiResult.foods.length > 0
+        ? aiResult.foods.map((f) => f.name)
+        : [editableData?.name ?? "Food"];
+
       await createMeal({
         userId: user.uid,
+        userName: profile?.name || "User",
+        userAvatar: profile?.profilePhoto,
         imageURL,
         detectedFoods: scanMode === "barcode"
           ? [barcodeSrc!.name]
-          : aiResult?.foods.map((f) => f.name) ?? [aiSrc?.name ?? "Food"],
+          : detectedFoods,
         calories: aiSrc?.calories ?? barcodeSrc?.calories ?? 0,
         protein: aiSrc?.protein ?? barcodeSrc?.protein ?? 0,
         carbs: aiSrc?.carbs ?? barcodeSrc?.carbs ?? 0,
@@ -446,7 +451,7 @@ export default function CameraPage() {
                     <div className="flex justify-between items-center text-sm mb-1">
                       <span className="text-white/60">{label}</span>
                       {isEditing && editableData ? (
-                        <input type="number" value={(editableData as any)[key]}
+                        <input type="number" value={editableData[key as keyof EditableNutrition] as number}
                           onChange={(e) => setEditableData({ ...editableData!, [key]: +e.target.value })}
                           className="w-14 text-right bg-white/10 rounded px-1 text-white text-xs border border-white/20 outline-none focus:border-primary" />
                       ) : (
@@ -471,7 +476,7 @@ export default function CameraPage() {
                   <div key={key}>
                     <span className="block text-xs text-white/50 uppercase mb-1">{label}</span>
                     {isEditing && editableData ? (
-                      <input type="number" value={(editableData as any)[key]}
+                      <input type="number" value={editableData[key as keyof EditableNutrition] as number}
                         onChange={(e) => setEditableData({ ...editableData!, [key]: +e.target.value })}
                         className="w-full bg-white/10 rounded px-2 py-1 text-white font-medium text-sm border border-white/20 outline-none focus:border-primary" />
                     ) : (

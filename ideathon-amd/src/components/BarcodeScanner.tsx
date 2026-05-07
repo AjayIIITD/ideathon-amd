@@ -13,6 +13,14 @@ export default function BarcodeScanner({ onResult, onError }: BarcodeScannerProp
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const scannerRef = useRef<Html5Qrcode | null>(null);
 
+  const onResultRef = useRef(onResult);
+  const onErrorRef = useRef(onError);
+
+  useEffect(() => {
+    onResultRef.current = onResult;
+    onErrorRef.current = onError;
+  }, [onResult, onError]);
+
   useEffect(() => {
     const startScanner = async () => {
       try {
@@ -30,7 +38,7 @@ export default function BarcodeScanner({ onResult, onError }: BarcodeScannerProp
               aspectRatio: 1,
             },
             (decodedText) => {
-              onResult(decodedText);
+              onResultRef.current(decodedText);
               // Stop scanning once we get a result
               if (scannerRef.current?.isScanning) {
                 scannerRef.current.stop().catch(console.error);
@@ -45,7 +53,7 @@ export default function BarcodeScanner({ onResult, onError }: BarcodeScannerProp
         }
       } catch (err) {
         setHasPermission(false);
-        if (onError) onError(err);
+        if (onErrorRef.current) onErrorRef.current(err);
       }
     };
 
@@ -56,7 +64,7 @@ export default function BarcodeScanner({ onResult, onError }: BarcodeScannerProp
         scannerRef.current.stop().catch(console.error);
       }
     };
-  }, [onResult, onError]);
+  }, []);
 
   if (hasPermission === false) {
     return (

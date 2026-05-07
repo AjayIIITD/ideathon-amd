@@ -29,6 +29,8 @@ export interface Meal {
   fats: number;
   fiber: number;
   sugar: number;
+  userName?: string;
+  userAvatar?: string;
   nutritionScore: number;
   mealTimestamp: number;
   createdAt: number;

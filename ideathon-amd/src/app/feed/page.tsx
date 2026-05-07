@@ -29,6 +29,8 @@ export default function FeedPage() {
       const mockMapped: Meal[] = mockMeals.map(m => ({
         id: m.id.toString(),
         userId: "mock-user",
+        userName: m.user.name,
+        userAvatar: m.user.avatar,
         imageURL: m.image,
         detectedFoods: [m.name],
         calories: m.calories,
@@ -79,9 +81,15 @@ export default function FeedPage() {
             >
               <div className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-zinc-800" />
+                  {meal.userAvatar ? (
+                    <img src={meal.userAvatar} alt={meal.userName} className="w-10 h-10 rounded-full object-cover" />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-bold">
+                      {meal.userName?.charAt(0) || "U"}
+                    </div>
+                  )}
                   <div>
-                    <p className="font-semibold">User</p>
+                    <p className="font-semibold">{meal.userName || "User"}</p>
                     <p className="text-xs text-white/50">{new Date(meal.createdAt).toLocaleTimeString()}</p>
                   </div>
                 </div>

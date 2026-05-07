@@ -45,7 +45,14 @@ const ONBOARDING_STEPS = [
 
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, unknown>>({});
+  const [answers, setAnswers] = useState<Record<string, unknown>>({
+    activityLevel: "Moderately Active",
+    sleepHours: 8,
+    sleepQuality: "Good",
+    mainGoal: "Eat Healthier",
+    dietPreference: "No Preference",
+    stressLevel: "Moderate"
+  });
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const router = useRouter();

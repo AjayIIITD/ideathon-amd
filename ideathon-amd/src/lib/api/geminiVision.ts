@@ -189,7 +189,11 @@ If you cannot identify food, return the same structure with all zeros and empty 
               ],
             },
           ],
-          generationConfig: { temperature: 0.1, maxOutputTokens: 1024 },
+          generationConfig: { 
+            temperature: 0.1, 
+            maxOutputTokens: 1024,
+            response_mime_type: "application/json"
+          },
         }),
       }
     );
